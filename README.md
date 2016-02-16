@@ -1,5 +1,7 @@
 # Nimslo
 
+![GitHub Logo](/nimslo.jpg)
+
 ## What is Nimslo?
 
 Nimslo is a hard&soft project of 3D camera with 4 objectives...
