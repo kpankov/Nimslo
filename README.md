@@ -16,3 +16,5 @@ For Netbeans use it:
 
 
 Markdown info https://guides.github.com/features/mastering-markdown/
+
+Documentation http://www.devexp.ru/2010/02/ispolzovanie-doxygen-dlya-dokumentirovaniya-koda/
