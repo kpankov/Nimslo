@@ -11,3 +11,6 @@ How to configure Netbeans https://netbeans.org/kb/docs/ide/git.html
 For Netbeans use it:
 
 `url = https://kspzel@github.com/kspzel/Nimslo.git`
+
+
+Markdown info https://guides.github.com/features/mastering-markdown/
