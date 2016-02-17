@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project( nimslo_image )
+find_package( OpenCV REQUIRED )
+add_executable( bin/nimslo main.cpp )
+target_link_libraries(nimslo_image ${OpenCV_LIBS})

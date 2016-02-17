@@ -20,6 +20,7 @@
       <itemPath>Makefile</itemPath>
       <itemPath>nbproject/private/launcher.properties</itemPath>
     </logicalFolder>
+    <itemPath>CMakeLists.txt</itemPath>
   </logicalFolder>
   <sourceFolderFilter>^(nbproject)$</sourceFolderFilter>
   <sourceRootList>
@@ -45,6 +46,8 @@
           <ccTool>
             <incDir>
               <pElem>include</pElem>
+              <pElem>/usr/local/include/opencv</pElem>
+              <pElem>/usr/local/include</pElem>
             </incDir>
           </ccTool>
         </makeTool>
@@ -53,8 +56,6 @@
           <preBuildCommand></preBuildCommand>
         </preBuild>
       </makefileType>
-      <item path="description.h" ex="false" tool="3" flavor2="0">
-      </item>
       <item path="main.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>

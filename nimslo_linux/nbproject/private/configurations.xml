@@ -4,33 +4,41 @@
     <df root="." name="0">
       <df name="bin">
       </df>
-      <df name="docs">
-        <df name="html">
-          <df name="search">
+      <df name="CMakeFiles">
+        <df name="2.8.12.2">
+          <df name="CompilerIdC">
+            <in>CMakeCCompilerId.c</in>
+          </df>
+          <df name="CompilerIdCXX">
+            <in>CMakeCXXCompilerId.cpp</in>
           </df>
         </df>
-        <df name="latex">
+        <df name="CMakeTmp">
         </df>
       </df>
       <df name="include">
         <in>main.hpp</in>
       </df>
+      <in>description.h</in>
       <in>main.cpp</in>
     </df>
     <df root="." name="1">
       <df name="bin">
       </df>
-      <df name="docs">
-        <df name="html">
-          <df name="search">
+      <df name="CMakeFiles">
+        <df name="2.8.12.2">
+          <df name="CompilerIdC">
+          </df>
+          <df name="CompilerIdCXX">
           </df>
         </df>
-        <df name="latex">
+        <df name="CMakeTmp">
         </df>
       </df>
       <df name="include">
       </df>
     </df>
+    <itemPath>CMakeLists.txt</itemPath>
   </logicalFolder>
   <projectmakefile>Makefile</projectmakefile>
   <confs>

@@ -2,8 +2,10 @@ CC=g++
 
 CPPFLAGS+= -c
 CPPFLAGS+= -I ./include
+#CPPFLAGS+= /usr/include/
+CPPFLAGS+= `pkg-config opencv --cflags --libs`
 
-LDFLAGS=
+LDFLAGS+= `pkg-config opencv --libs`
 C_SRC=main.cpp
 C_OBJS=$(C_SRC:.cpp=.o)
 EXECUTABLE=bin/nimslo
