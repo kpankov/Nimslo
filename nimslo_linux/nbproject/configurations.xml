@@ -42,10 +42,9 @@
           <buildCommandWorkingDir>.</buildCommandWorkingDir>
           <buildCommand>${MAKE} -f Makefile</buildCommand>
           <cleanCommand>${MAKE} -f Makefile clean</cleanCommand>
-          <executablePath></executablePath>
+          <executablePath>opencv_example</executablePath>
           <ccTool>
             <incDir>
-              <pElem>include</pElem>
               <pElem>/usr/local/include/opencv</pElem>
               <pElem>/usr/local/include</pElem>
             </incDir>

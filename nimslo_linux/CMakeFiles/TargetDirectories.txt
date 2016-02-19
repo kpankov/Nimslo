@@ -1,0 +1,1 @@
+/home/kpankov/Projects/Nimslo/nimslo_linux/CMakeFiles/opencv_example.dir

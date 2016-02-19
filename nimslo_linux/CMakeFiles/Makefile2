@@ -53,38 +53,38 @@ CMAKE_SOURCE_DIR = /home/kpankov/Projects/Nimslo/nimslo_linux
 CMAKE_BINARY_DIR = /home/kpankov/Projects/Nimslo/nimslo_linux
 
 #=============================================================================
-# Target rules for target CMakeFiles/DisplayImage.dir
+# Target rules for target CMakeFiles/opencv_example.dir
 
 # All Build rule for target.
-CMakeFiles/DisplayImage.dir/all:
-	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/depend
-	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/kpankov/Projects/Nimslo/nimslo_linux/CMakeFiles 
-	@echo "Built target DisplayImage"
-.PHONY : CMakeFiles/DisplayImage.dir/all
+CMakeFiles/opencv_example.dir/all:
+	$(MAKE) -f CMakeFiles/opencv_example.dir/build.make CMakeFiles/opencv_example.dir/depend
+	$(MAKE) -f CMakeFiles/opencv_example.dir/build.make CMakeFiles/opencv_example.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/kpankov/Projects/Nimslo/nimslo_linux/CMakeFiles  1
+	@echo "Built target opencv_example"
+.PHONY : CMakeFiles/opencv_example.dir/all
 
 # Include target in all.
-all: CMakeFiles/DisplayImage.dir/all
+all: CMakeFiles/opencv_example.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/DisplayImage.dir/rule: cmake_check_build_system
+CMakeFiles/opencv_example.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/kpankov/Projects/Nimslo/nimslo_linux/CMakeFiles 1
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/opencv_example.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/kpankov/Projects/Nimslo/nimslo_linux/CMakeFiles 0
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/DisplayImage.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/kpankov/Projects/Nimslo/nimslo_linux/CMakeFiles 0
-.PHONY : CMakeFiles/DisplayImage.dir/rule
+.PHONY : CMakeFiles/opencv_example.dir/rule
 
 # Convenience name for target.
-DisplayImage: CMakeFiles/DisplayImage.dir/rule
-.PHONY : DisplayImage
+opencv_example: CMakeFiles/opencv_example.dir/rule
+.PHONY : opencv_example
 
 # clean rule for target.
-CMakeFiles/DisplayImage.dir/clean:
-	$(MAKE) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/clean
-.PHONY : CMakeFiles/DisplayImage.dir/clean
+CMakeFiles/opencv_example.dir/clean:
+	$(MAKE) -f CMakeFiles/opencv_example.dir/build.make CMakeFiles/opencv_example.dir/clean
+.PHONY : CMakeFiles/opencv_example.dir/clean
 
 # clean rule for target.
-clean: CMakeFiles/DisplayImage.dir/clean
+clean: CMakeFiles/opencv_example.dir/clean
 .PHONY : clean
 
 #=============================================================================

@@ -116,7 +116,7 @@ CMAKE_OBJCOPY:FILEPATH=/usr/bin/objcopy
 CMAKE_OBJDUMP:FILEPATH=/usr/bin/objdump
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=nimslo_image
+CMAKE_PROJECT_NAME:STATIC=opencv_example_project
 
 //Path to a program.
 CMAKE_RANLIB:FILEPATH=/usr/bin/ranlib
@@ -204,6 +204,12 @@ nimslo_image_BINARY_DIR:STATIC=/home/kpankov/Projects/Nimslo/nimslo_linux
 
 //Value Computed by CMake
 nimslo_image_SOURCE_DIR:STATIC=/home/kpankov/Projects/Nimslo/nimslo_linux
+
+//Value Computed by CMake
+opencv_example_project_BINARY_DIR:STATIC=/home/kpankov/Projects/Nimslo/nimslo_linux
+
+//Value Computed by CMake
+opencv_example_project_SOURCE_DIR:STATIC=/home/kpankov/Projects/Nimslo/nimslo_linux
 
 
 ########################
