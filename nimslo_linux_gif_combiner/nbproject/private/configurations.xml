@@ -13,6 +13,8 @@
         <gdb_interceptlist>
           <gdbinterceptoptions gdb_all="false" gdb_unhandled="true" gdb_unexpected="true"/>
         </gdb_interceptlist>
+        <gdb_signals>
+        </gdb_signals>
         <gdb_options>
           <DebugOptions>
           </DebugOptions>
@@ -58,8 +60,11 @@
       <runprofile version="9">
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
+          <runcommandpicklistitem>bin/combiner</runcommandpicklistitem>
+          <runcommandpicklistitem>bin/combiner 100 1.GIF 2.GIF 3.GIF 4.GIF</runcommandpicklistitem>
+          <runcommandpicklistitem>bin/combiner 100 1.GIF 2.GIF 3.GIF 4.GIF out.GIF</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}"</runcommand>
+        <runcommand>bin/combiner 100 1.GIF 2.GIF 3.GIF 4.GIF out.GIF</runcommand>
         <rundir></rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
