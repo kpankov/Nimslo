@@ -14,6 +14,8 @@ struct gifBody {
 
 int gifCombine(struct gifHeader header, unsigned int pause, unsigned char col, struct gifBody *body);
 
+int gifOpen(const char *filename);
+
 void gifSetDelay(unsigned int delay);
 
 void gifSetSize(unsigned int Width, unsigned int Height);

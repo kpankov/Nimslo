@@ -28,6 +28,8 @@ int main(int argc, char** argv) {
     printf("Input files: %s %s %s %s\n",argv[2],argv[3],argv[4],argv[5]);
     printf("Output file: %s\n",argv[6]);
     
+    gifOpen(argv[2]);
+    
     printf("\n>>> OK <<<\n\n");
 
     return 0;
