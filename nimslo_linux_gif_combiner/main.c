@@ -9,8 +9,12 @@
 
 #include "combiner.h"
 
+#define GIFS 4
+
 int main(int argc, char** argv) {
-    int pause;
+    struct gifFile Gifs[GIFS];
+    unsigned int pause;
+    volatile unsigned int i;
 
     if (argc != 7) {
         printf("Invalid parameters! Use: \n");
@@ -18,18 +22,31 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    if (( pause = strtoul(argv[1], NULL, 10) ) <= 1000) {
+    if ((pause = strtoul(argv[1], NULL, 10)) <= 1000) {
         printf("Pause = %d\n", pause);
     } else {
         printf("Invalid pause!\n");
         return 0;
     }
 
-    printf("Input files: %s %s %s %s\n",argv[2],argv[3],argv[4],argv[5]);
-    printf("Output file: %s\n",argv[6]);
+    printf("Input files: ");
+    for (i = 0; i < GIFS; i++){
+        setFilename(&Gifs[i],argv[2 + i]);
+        printf("%s ", Gifs[i].filename);
+    }
+    printf("\n");
     
-    gifOpen(argv[2]);
+    printf("Output file: %s\n", argv[6]);
+
+    /*for (i = 0; i < GIFS; i++) {
+        gifOpen(&Gifs[i]);
+    }*/
     
+    gifOpen(&Gifs[0]);
+    gifOpen(&Gifs[1]);
+    gifOpen(&Gifs[2]);
+    gifOpen(&Gifs[3]);
+
     printf("\n>>> OK <<<\n\n");
 
     return 0;

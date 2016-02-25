@@ -7,18 +7,23 @@
 #ifndef COMBINER_H
 #define COMBINER_H
 
-struct gifHeader {};
-struct gifBody {
-    char *name; //?
+struct gifHeader {
+    char magic[6];
+    unsigned short width, height, paletteSize;
+    unsigned char palette[256][3];
 };
 
-int gifCombine(struct gifHeader header, unsigned int pause, unsigned char col, struct gifBody *body);
+struct gifFile {
+    char *filename;
+    struct gifHeader header;
+};
 
-int gifOpen(const char *filename);
-
+int gifCombine(unsigned int pause, unsigned char col, struct gifFile *gif);
+int gifOpen(struct gifFile *gif);
 void gifSetDelay(unsigned int delay);
-
 void gifSetSize(unsigned int Width, unsigned int Height);
+
+void setFilename(struct gifFile *gif, const char *filename);
 
 #endif /* COMBINER_H */
 
