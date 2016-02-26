@@ -9,7 +9,6 @@
 #include "combiner.h"
 #include <stdio.h>
 #include <string.h>
-#include <math.h>
 #include <malloc.h>
 
 char gifLogicalScreen[13] = {'G', 'I', 'F', '8', '9', 'a', 0x80, 0x02, 0x80, 0x02, 0xF7, 0xFF, 0x00};
@@ -67,7 +66,7 @@ int gifOpen(struct gifFile *gif) {
 
     printf("Source colors: %d bit/pixel\n", (((unsigned char) ((lsd & 0x70) >> 4) + 1)*3));
 
-    gif->header.paletteSize = (unsigned int) pow(2, ((unsigned char) (lsd & 0x07) + 1));
+    gif->header.paletteSize = (unsigned int)( 2 << (unsigned char)(lsd & 0x07));
     printf("Palette size: %d\n", gif->header.paletteSize);
 
     getc(fp); // TODO: BG
