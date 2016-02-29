@@ -56,10 +56,10 @@ int gifCombine(char *filename, unsigned int pause, unsigned char col, struct gif
         putc(0x00, fp); // Left
         putc(0x00, fp); // Left
         
-        putc(Width & 0xFF, fp);
-        putc((Width >> 8) & 0xFF, fp);
-        putc(Height & 0xFF, fp);
-        putc((Height >> 8) & 0xFF, fp);
+        putc(gif[0].header.width & 0xFF, fp);
+        putc((gif[0].header.width >> 8) & 0xFF, fp);
+        putc(gif[0].header.height & 0xFF, fp);
+        putc((gif[0].header.height >> 8) & 0xFF, fp);
         
         putc(0x87, fp); // Flags
         
