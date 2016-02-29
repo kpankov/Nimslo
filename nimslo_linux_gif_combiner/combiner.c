@@ -11,19 +11,78 @@
 #include <string.h>
 #include <malloc.h>
 
-char gifLogicalScreen[13] = {'G', 'I', 'F', '8', '9', 'a', 0x80, 0x02, 0x80, 0x02, 0xF7, 0xFF, 0x00};
-char gifExtGraphical[8] = {'!', 0xF9, 0x04, 0x08, 0x0A, 0x00, 0x00, 0x00};
+char gifLogicalScreen[13] = {'G', 'I', 'F', '8', '9', 'a', 0x80, 0x02, 0x80, 0x02, 0x70, 0x00, 0x00};
+char gifExtGraphical[8] = {'!', 0xF9, 0x04, 0x08, 0x0A, 0x00, 0x00, 0x00}; // Extention of graphical control
 char gifExtNetscape[19] = {'!', 0xFF, 0x0B, 'N', 'E', 'T', 'S', 'C', 'A', 'P', 'E', '2', '.', '0', 0x03, 0x01, 0x00, 0x00, 0x00};
-char gifPalette[256][3];
 
-int gifCombine(unsigned int pause, unsigned char col, struct gifFile *gif) {
-    return 0;
+int gifCombine(char *filename, unsigned int pause, unsigned char col, struct gifFile *gif) {
+    FILE *fp;
+    volatile unsigned int i;
+
+    for (i = 1; i < col; i++) {
+        if (!((gif[i - 1].header.width == gif[i].header.width)&&(gif[i - 1].header.height == gif[i].header.height))) {
+            printf("Warning: Width or Height of files is not equal!\n");
+            return 0;
+        }
+    }
+
+    gifSetSize(gif[0].header.width, gif[0].header.height);
+    gifSetDelay(pause);
+
+    fp = fopen(filename, "w");
+
+    if (fp == NULL) {
+        printf("Can't open output file %s\n", filename);
+        return 0;
+    }
+
+    for (i = 0; i<sizeof (gifLogicalScreen); i++) {
+        putc(gifLogicalScreen[i], fp);
+    }
+
+    for (i = 0; i<sizeof (gifExtNetscape); i++) {
+        putc(gifExtNetscape[i], fp);
+    }
+
+    for (i = 0; i<sizeof (gifExtGraphical); i++) {
+        putc(gifExtGraphical[i], fp);
+    }
+
+    for (i = 0; i < col; i++) {
+        putc(',', fp);/// Start of Image
+        
+        putc(0x00, fp); // Top
+        putc(0x00, fp); // Top
+        putc(0x00, fp); // Left
+        putc(0x00, fp); // Left
+        
+        putc(Width & 0xFF, fp);
+        putc((Width >> 8) & 0xFF, fp);
+        putc(Height & 0xFF, fp);
+        putc((Height >> 8) & 0xFF, fp);
+        
+        putc(0x87, fp); // Flags
+        
+        // TODO: Local pattern here
+        
+        putc(0x08, fp); // MC
+        
+        // TODO: LZW here
+        
+        putc(0x00, fp); /// End of Image
+    }
+
+    putc(';', fp); /// End of GIF
+
+    fclose(fp);
+
+    return 1;
 }
 
 int gifOpen(struct gifFile *gif) {
     FILE *fp;
     FILE *fpHtml;
-    unsigned int i;
+    volatile unsigned int i;
 
     char buf[100];
 
@@ -36,16 +95,16 @@ int gifOpen(struct gifFile *gif) {
 
     if (fp == NULL) {
         printf("Can't open file %s\n", gif->filename);
-        return -1;
+        return 0;
     }
 
     fscanf(fp, "%6s", gif->header.magic);
-    
+
     if (gif->header.magic[0] == 'G' && gif->header.magic[1] == 'I' && gif->header.magic[2] == 'F') { // REFACTOR IT!!!
         printf("Magic:  %s\n", gif->header.magic);
     } else {
         printf("Not a GIF file!\n");
-        return -1;
+        return 0;
     }
 
     gif->header.width = getc(fp);
@@ -66,7 +125,7 @@ int gifOpen(struct gifFile *gif) {
 
     printf("Source colors: %d bit/pixel\n", (((unsigned char) ((lsd & 0x70) >> 4) + 1)*3));
 
-    gif->header.paletteSize = (unsigned int)( 2 << (unsigned char)(lsd & 0x07));
+    gif->header.paletteSize = (unsigned int) (2 << (unsigned char) (lsd & 0x07));
     printf("Palette size: %d\n", gif->header.paletteSize);
 
     getc(fp); // TODO: BG
@@ -75,7 +134,7 @@ int gifOpen(struct gifFile *gif) {
     sprintf(buf, "global_palette_%s.html", gif->filename);
     fpHtml = fopen(buf, "w");
     fprintf(fpHtml, "<html>\n<head>\n<title>Global Palette of %s</title>\n<head/>\n<body>\n<table border=0 cellspacing=0 cellpadding=0 style=\"border-collapse:collapse;\">\n", gif->filename);
-    for (i = 0; i < gif->header.paletteSize * 3; i += 3) {
+    for (i = 0; i < gif->header.paletteSize; i++) {
         gif->header.palette[i][0] = getc(fp); // Red
         gif->header.palette[i][1] = getc(fp); // Green
         gif->header.palette[i][2] = getc(fp); // Blue
@@ -85,8 +144,8 @@ int gifOpen(struct gifFile *gif) {
         fprintf(fpHtml, "<td style=\"font-size: 8px;\">&nbsp;0x%02X%02X%02X</td>\n", gif->header.palette[i][0], gif->header.palette[i][1], gif->header.palette[i][2]);
         fprintf(fpHtml, "</tr>");
     }
-    fclose(fpHtml);
     fprintf(fpHtml, "</table>\n</body>\n</html>\n");
+    fclose(fpHtml);
 
 
     if (getc(fp) == ',') printf("Global palette is correct. See it in file: %s\n", buf);
@@ -121,15 +180,17 @@ int gifOpen(struct gifFile *gif) {
         printf("%d blocks read.\n", blockCounter);
     } else {
         printf("ERROR: Read blocks error or wrong GIF87a file format!\n");
-        return -1;
+        return 0;
     }
 
     fclose(fp);
 
     printf("File %s success -------------------------------------\n", gif->filename);
 
-    return 0;
+    return 1;
 }
+
+/// Coming soon
 
 int gifSave(const char *filename, char *buffer, unsigned int size) {
     FILE *fp;
@@ -138,7 +199,7 @@ int gifSave(const char *filename, char *buffer, unsigned int size) {
 
     if (fp == NULL) {
         printf("Can't open output file %s\n", filename);
-        return -1;
+        return 0;
     }
 
     printf("Open file %s\n", filename);
@@ -160,6 +221,6 @@ void gifSetSize(unsigned int Width, unsigned int Height) {
     gifLogicalScreen[9] = (Height >> 8) & 0xFF;
 }
 
-void setFilename(struct gifFile *gif, const char *filename){
-    gif->filename = (char *)filename;
+void setFilename(struct gifFile *gif, const char *filename) {
+    gif->filename = (char *) filename;
 }

@@ -14,7 +14,7 @@
 int main(int argc, char** argv) {
     struct gifFile Gifs[GIFS];
     unsigned int pause;
-    volatile unsigned int i;
+    volatile unsigned int i, errors;
 
     if (argc != 7) {
         printf("Invalid parameters! Use: \n");
@@ -30,22 +30,32 @@ int main(int argc, char** argv) {
     }
 
     printf("Input files: ");
-    for (i = 0; i < GIFS; i++){
-        setFilename(&Gifs[i],argv[2 + i]);
+    for (i = 0; i < GIFS; i++) {
+        setFilename(&Gifs[i], argv[2 + i]);
         printf("%s ", Gifs[i].filename);
     }
     printf("\n");
-    
+
     printf("Output file: %s\n", argv[6]);
 
-    /*for (i = 0; i < GIFS; i++) {
-        gifOpen(&Gifs[i]);
-    }*/
+    errors = 0;
+    for (i = 0; i < GIFS; i++) {
+        if (!gifOpen(&Gifs[i])) {
+            errors++;
+        }
+    }
     
-    gifOpen(&Gifs[0]);
-    gifOpen(&Gifs[1]);
-    gifOpen(&Gifs[2]);
-    gifOpen(&Gifs[3]);
+    printf("\n");
+    
+    if (errors) {
+        printf("Read files error!\n");
+        return 0;
+    } else {
+        printf("Read files OK.\n");
+    }
+    
+    printf("Combining...\n");
+    gifCombine(argv[2+GIFS],pause,GIFS,Gifs);
 
     printf("\n>>> OK <<<\n\n");
 

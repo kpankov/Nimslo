@@ -18,8 +18,9 @@ struct gifFile {
     struct gifHeader header;
 };
 
-int gifCombine(unsigned int pause, unsigned char col, struct gifFile *gif);
+int gifCombine(char *filename, unsigned int pause, unsigned char col, struct gifFile *gif);
 int gifOpen(struct gifFile *gif);
+
 void gifSetDelay(unsigned int delay);
 void gifSetSize(unsigned int Width, unsigned int Height);
 
