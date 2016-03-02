@@ -15,6 +15,7 @@ struct gifHeader {
 
 struct gifFile {
     char *filename;
+    long int lzwPosition;
     struct gifHeader header;
 };
 

@@ -16,8 +16,10 @@ char gifExtGraphical[8] = {'!', 0xF9, 0x04, 0x08, 0x0A, 0x00, 0x00, 0x00}; // Ex
 char gifExtNetscape[19] = {'!', 0xFF, 0x0B, 'N', 'E', 'T', 'S', 'C', 'A', 'P', 'E', '2', '.', '0', 0x03, 0x01, 0x00, 0x00, 0x00};
 
 int gifCombine(char *filename, unsigned int pause, unsigned char col, struct gifFile *gif) {
-    FILE *fp;
-    volatile unsigned int i;
+    FILE *fp, *fpLzw;
+    volatile int i, counter;
+    unsigned char blockS;
+    char incr_flag = 1;
 
     for (i = 1; i < col; i++) {
         if (!((gif[i - 1].header.width == gif[i].header.width)&&(gif[i - 1].header.height == gif[i].header.height))) {
@@ -48,28 +50,64 @@ int gifCombine(char *filename, unsigned int pause, unsigned char col, struct gif
         putc(gifExtGraphical[i], fp);
     }
 
-    for (i = 0; i < col; i++) {
-        putc(',', fp);/// Start of Image
-        
+    i = 0;
+    while (1) {
+        putc(',', fp); /// Start of Image
+
         putc(0x00, fp); // Top
         putc(0x00, fp); // Top
         putc(0x00, fp); // Left
         putc(0x00, fp); // Left
-        
-        putc(gif[0].header.width & 0xFF, fp);
-        putc((gif[0].header.width >> 8) & 0xFF, fp);
-        putc(gif[0].header.height & 0xFF, fp);
-        putc((gif[0].header.height >> 8) & 0xFF, fp);
-        
+
+        putc(gif[i].header.width & 0xFF, fp);
+        putc((gif[i].header.width >> 8) & 0xFF, fp);
+        putc(gif[i].header.height & 0xFF, fp);
+        putc((gif[i].header.height >> 8) & 0xFF, fp);
+
         putc(0x87, fp); // Flags
-        
-        // TODO: Local pattern here
-        
+
+        for (counter = 0; counter < gif[i].header.paletteSize; counter++) {
+            putc(gif[i].header.palette[counter][0], fp);
+            putc(gif[i].header.palette[counter][1], fp);
+            putc(gif[i].header.palette[counter][2], fp);
+        }
+
         putc(0x08, fp); // MC
-        
-        // TODO: LZW here
-        
-        putc(0x00, fp); /// End of Image
+
+        fpLzw = fopen(gif[i].filename, "r");
+
+        if (fpLzw == NULL) {
+            printf("Can't open output file %s\n", gif[i].filename);
+            return 0;
+        }
+
+        fseek(fpLzw, gif[i].lzwPosition, SEEK_SET);
+
+        while (1) {
+            blockS = getc(fpLzw);
+            if (blockS) {
+                putc(blockS, fp);
+            } else {
+                putc(0x00, fp); /// End of Image
+                break;
+            }
+            for (counter = 0; counter < blockS; counter++) {
+                putc(getc(fpLzw), fp);
+            }
+        }
+
+        fclose(fpLzw);
+
+        if (incr_flag)
+            i++;
+        else
+            i--;
+        if (i >= col) {
+            incr_flag = 0;
+            i -= 2;
+        }
+        if (i <= 0)
+            break;
     }
 
     putc(';', fp); /// End of GIF
@@ -85,6 +123,7 @@ int gifOpen(struct gifFile *gif) {
     volatile unsigned int i;
 
     char buf[100];
+    char singleBuf;
 
     unsigned char lsd, blockS;
     unsigned int blockCounter;
@@ -147,9 +186,21 @@ int gifOpen(struct gifFile *gif) {
     fprintf(fpHtml, "</table>\n</body>\n</html>\n");
     fclose(fpHtml);
 
-
-    if (getc(fp) == ',') printf("Global palette is correct. See it in file: %s\n", buf);
-    else printf("Error!\n");
+    singleBuf = getc(fp);
+    if (singleBuf == ',') printf("Global palette is correct. See it in file: %s\n", buf);
+    else if (singleBuf == '!') {
+        printf("Global palette is correct. See it in file: %s\n", buf);
+        printf("Warning: Not a GIF87a file!\n");
+        printf("%c ", singleBuf);
+        printf("%02x ", getc(fp));
+        printf("%02x ", getc(fp));
+        printf("%02x ", getc(fp));
+        printf("%02x ", getc(fp));
+        printf("%02x ", getc(fp));
+        printf("%02x ", getc(fp));
+        printf("%02x\n", getc(fp));
+        if (getc(fp) != ',') return -1;
+    } else printf("Error!\n");
 
     getc(fp); // TODO: Left
     getc(fp); // TODO: Left
@@ -162,6 +213,8 @@ int gifOpen(struct gifFile *gif) {
     getc(fp); // TODO: Image descriptor
 
     printf("MC: 0x%02X\n", getc(fp)); // TODO: MC
+
+    gif->lzwPosition = ftell(fp);
 
     blockCounter = 0;
     while (1) {

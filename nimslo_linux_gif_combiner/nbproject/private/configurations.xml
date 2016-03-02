@@ -62,8 +62,10 @@
           <runcommandpicklistitem>bin/combiner 100 1.GIF 2.GIF 3.GIF 4.GIF</runcommandpicklistitem>
           <runcommandpicklistitem>bin/combiner 100 1.GIF 2.GIF 3.GIF 4.GIF out.GIF</runcommandpicklistitem>
           <runcommandpicklistitem>./combiner 100 1.GIF 2.GIF 3.GIF 4.GIF out.GIF</runcommandpicklistitem>
+          <runcommandpicklistitem>./combiner 15 1.GIF 2.GIF 3.GIF 4.GIF out.GIF</runcommandpicklistitem>
+          <runcommandpicklistitem>./combiner 10 1.GIF 2.GIF 3.GIF 4.GIF out.GIF</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>./combiner 100 1.GIF 2.GIF 3.GIF 4.GIF out.GIF</runcommand>
+        <runcommand>./combiner 10 1.GIF 2.GIF 3.GIF 4.GIF out.GIF</runcommand>
         <rundir>bin</rundir>
         <buildfirst>true</buildfirst>
         <terminal-type>0</terminal-type>
