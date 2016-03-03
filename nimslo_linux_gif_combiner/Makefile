@@ -4,7 +4,7 @@ CFLAGS=-g -Wall
 LDFLAGS=-lm
 SOURCES=main.c combiner.c
 OBJECTS=$(SOURCES:.c=.o)
-EXECUTABLE=bin/combiner
+EXECUTABLE=../bin/gifcombiner
 
 all: $(SOURCES) $(EXECUTABLE)
 	
