@@ -7,4 +7,4 @@ for i in `ls *.JPG`; do
 j+=1
 done
 
-../combiner 10 1.GIF 2.GIF 3.GIF 4.GIF out.GIF
+../../bin/gifcombiner 10 1.GIF 2.GIF 3.GIF 4.GIF out.GIF

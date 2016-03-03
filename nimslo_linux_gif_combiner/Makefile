@@ -9,11 +9,12 @@ EXECUTABLE=../bin/gifcombiner
 all: $(SOURCES) $(EXECUTABLE)
 	
 $(EXECUTABLE): $(OBJECTS) 
-	mkdir -p bin
+	mkdir -p ../bin
 	$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+	rm -rf *.o
 
 .cpp.o:
 	$(CC) $(CFLAGS) $< -o $@
 	
 clean:
-	rm -rf *.o EXECUTABLE
+	rm -rf *.o $(EXECUTABLE)
