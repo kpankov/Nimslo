@@ -1,0 +1,5 @@
+gcc -g -Wall   -c -o main.o main.c
+gcc -g -Wall   -c -o combiner.o combiner.c
+mkdir -p ../bin
+gcc -lm main.o combiner.o -o ../bin/gifcombiner
+rm -rf *.o
