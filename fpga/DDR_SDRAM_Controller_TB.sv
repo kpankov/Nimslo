@@ -1,9 +1,28 @@
-// Testbench
+`timescale 100ps / 1ps
+//////////////////////////////////////////////////////////////////////////////////
+// Company:        KSP-Labs
+// Engineer:       K. Pankov
+// 
+// Create Date:    12:04:40 06/06/2016 
+// Design Name:    DDR SDRAM Controller Module Testbanch
+// Module Name:    DDR_SDRAM_Controller_TB
+// Project Name:   Nimslo
+// Target Devices: xc3s1600e-5fg320
+// Tool versions: 
+// Description: 
+//
+// Dependencies: 
+//
+// Revision: 
+// Revision 0.01 - File Created
+// Additional Comments: 
+//
+//////////////////////////////////////////////////////////////////////////////////
 module DDR_SDRAM_Controller_TB;
 
   reg [12:0] IC_A;
   reg [1:0] IC_BA;
-  reg [15:0] IC_DQ;
+  wire [15:0] IC_DQ;
   reg IC_CK_P;
   reg IC_CK_N;
   reg IC_CKE;
@@ -13,8 +32,8 @@ module DDR_SDRAM_Controller_TB;
   reg IC_RAS;
   reg IC_CAS;
   reg IC_WE;
-  reg IC_LDQS;
-  reg IC_UDQS;
+  wire IC_LDQS;
+  wire IC_UDQS;
   reg CLK_200MHz;
   reg WrStart;
   reg WrReady;
@@ -28,82 +47,71 @@ module DDR_SDRAM_Controller_TB;
   reg [15:0] RdData;
   reg DevReady;
   
-  // Instantiate design under test
-  // D_WIDTH = 8
-  // A_WIDTH = 5
-  // A_MAX = 2^A_WIDTH = 32
-  
   DDR_SDRAM_Controller DDR (
-    .IC_A(),
-	.IC_BA(),
-	.IC_DQ(),
-	.IC_CK_P(),
-	.IC_CK_N(),
-	.IC_CKE(),
-	.IC_CS(),
-	.IC_LDM(),
-	.IC_UDM(),
-	.IC_RAS(),
-	.IC_CAS(),
-	.IC_WE(),
-	.IC_LDQS(),
-	.IC_UDQS(),
-	.CLK_200MHz(),
-	.WrStart(),
-	.WrReady(),
-	.WrBank(),
-	.WrAddr(),
-	.WrData(),
-	.RdStart(),
-	.RdReady(),
-	.RdBank(),
-	.RdAddr(),
-	.RdData(),
-    .DevReady()
-    );
-  
+    .IC_A(IC_A),
+    .IC_BA(IC_BA),
+    .IC_DQ(IC_DQ),
+    .IC_CK_P(IC_CK_P),
+    .IC_CK_N(IC_CK_N),
+    .IC_CKE(IC_CKE),
+    .IC_CS(IC_CS),
+    .IC_LDM(IC_LDM),
+    .IC_UDM(IC_UDM),
+    .IC_RAS(IC_RAS),
+    .IC_CAS(IC_CAS),
+    .IC_WE(IC_WE),
+    .IC_LDQS(IC_LDQS),
+    .IC_UDQS(IC_UDQS),
+    .CLK_200MHz(CLK_200MHz),
+    .WrStart(WrStart),
+    .WrReady(WrReady),
+    .WrBank(WrBank),
+    .WrAddr(WrAddr),
+    .WrData(WrData),
+    .RdStart(RdStart),
+    .RdReady(RdReady),
+    .RdBank(RdBank),
+    .RdAddr(RdAddr),
+    .RdData(RdData),
+    .DevReady(DevReady)
   );
     
   initial begin
     // Dump waves
     $dumpfile("dump.vcd");
-    $dumpvars(1, test);
+    $dumpvars(1, DDR_SDRAM_Controller_TB);
     
-    clk_write = 0;
-    clk_read = 0;
-    write_enable = 0;
-    address_read = 5'h1B;
-    address_write = address_read;
+    CLK_200MHz = 0;
+//    clk_write = 0;
+//    clk_read = 0;
+//    write_enable = 0;
+//    address_read = 5'h1B;
+//    address_write = address_read;
 
     $display("Read initial data.");
-    toggle_clk_read;
-    $display("data[%0h]: %0h",
-      address_read, data_read);
+//    toggle_clk_read;
+//    $display("data[%0h]: %0h",
+//      address_read, data_read);
     
     $display("Write new data.");
-    write_enable = 1;
-    data_write = 8'hC5;
-    toggle_clk_write;
-    write_enable = 0;
+//    write_enable = 1;
+//    data_write = 8'hC5;
+//    toggle_clk_write;
+//    write_enable = 0;
     
     $display("Read new data.");
-    toggle_clk_read;
-    $display("data[%0h]: %0h",
-      address_read, data_read);
+//    toggle_clk_read;
+//    $display("data[%0h]: %0h",
+//      address_read, data_read);
   end
   
-  task toggle_clk_write;
-    begin
-      #10 clk_write = ~clk_write;
-      #10 clk_write = ~clk_write;
-    end
-  endtask
-
-  task toggle_clk_read;
-    begin
-      #10 clk_read = ~clk_read;
-      #10 clk_read = ~clk_read;
-    end
-  endtask
+  always #25 CLK_200MHz = ~CLK_200MHz;
+  
+//  task toggle_clk;
+//    begin
+//      #10 CLK_200MHz = ~CLK_200MHz;
+//      #10 CLK_200MHz = ~CLK_200MHz;
+//    end
+//  endtask
 
 endmodule
