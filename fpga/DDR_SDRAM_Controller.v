@@ -1,13 +1,13 @@
 `timescale 100ps / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
+// Company:        KSP-Labs
+// Engineer:       K. Pankov
 // 
 // Create Date:    23:04:40 05/24/2016 
-// Design Name: 
+// Design Name:    DDR SDRAM Controller Module
 // Module Name:    DDR_SDRAM_Controller 
-// Project Name: 
-// Target Devices: 
+// Project Name:   Nimslo
+// Target Devices: xc3s1600e-5fg320
 // Tool versions: 
 // Description: 
 //
@@ -49,6 +49,7 @@ module DDR_SDRAM_Controller(
 
 	reg CLK_100MHz = 0;
 	
+	// Test bench
 	reg [1:0] WrBank;
 	reg [22:0] WrAddr;
 	reg [15:0] WrData;
@@ -61,6 +62,7 @@ module DDR_SDRAM_Controller(
 	end
 	always #25 CLK_200MHz = ~CLK_200MHz;
 	always @(posedge DevReady) WriteStage = 1;
+	// End of test bench
 	
 	always @(posedge CLK_200MHz)  CLK_100MHz = ~CLK_100MHz;
 
