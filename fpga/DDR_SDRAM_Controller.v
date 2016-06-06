@@ -33,12 +33,12 @@ module DDR_SDRAM_Controller(
 	output reg IC_WE,
 	inout IC_LDQS,
 	inout IC_UDQS,
-	//input CLK_200MHz,
-	//input WrStart,
+	input CLK_200MHz,
+	input WrStart,
 	output reg WrReady = 0,
-	//input [1:0] WrBank,
-	//input [22:0] WrAddr,
-	//input [15:0] WrData,
+	input [1:0] WrBank,
+	input [22:0] WrAddr,
+	input [15:0] WrData,
 	input RdStart,
 	output reg RdReady = 0,
 	input [1:0] RdBank,
@@ -50,18 +50,18 @@ module DDR_SDRAM_Controller(
 	reg CLK_100MHz = 0;
 	
 	// Test bench
-	reg [1:0] WrBank;
-	reg [22:0] WrAddr;
-	reg [15:0] WrData;
-	reg WrStart = 0;
-	reg CLK_200MHz;	
-	initial begin
-		CLK_200MHz = 1;
-		WrBank = 2'b00;
-		WrData = 16'hBABE;
-	end
-	always #25 CLK_200MHz = ~CLK_200MHz;
-	always @(posedge DevReady) WriteStage = 1;
+	//reg [1:0] WrBank;
+	//reg [22:0] WrAddr;
+	//reg [15:0] WrData;
+	//reg WrStart = 0;
+	//reg CLK_200MHz;	
+	//initial begin
+	//	CLK_200MHz = 1;
+	//	WrBank = 2'b00;
+	//	WrData = 16'hBABE;
+	//end
+	//always #25 CLK_200MHz = ~CLK_200MHz;
+	//always @(posedge DevReady) WriteStage = 1;
 	// End of test bench
 	
 	always @(posedge CLK_200MHz)  CLK_100MHz = ~CLK_100MHz;
@@ -73,24 +73,24 @@ module DDR_SDRAM_Controller(
 	reg IC_LDQS_BUF;
 	reg IC_UDQS_BUF;
 	reg [15:0] IC_DQ_BUF;
-	OBUFT BUF_LDQS (.I(IC_LDQS_BUF), .T(IsOutputs), .O(IC_LDQS));
-	OBUFT BUF_UDQS (.I(IC_UDQS_BUF), .T(IsOutputs), .O(IC_UDQS));
-	OBUFT BUF0 (.I(IC_DQ_BUF[0]), .T(IsOutputs), .O(IC_DQ[0]));
-	OBUFT BUF1 (.I(IC_DQ_BUF[1]), .T(IsOutputs), .O(IC_DQ[1]));
-	OBUFT BUF2 (.I(IC_DQ_BUF[2]), .T(IsOutputs), .O(IC_DQ[2]));
-	OBUFT BUF3 (.I(IC_DQ_BUF[3]), .T(IsOutputs), .O(IC_DQ[3]));
-	OBUFT BUF4 (.I(IC_DQ_BUF[4]), .T(IsOutputs), .O(IC_DQ[4]));
-	OBUFT BUF5 (.I(IC_DQ_BUF[5]), .T(IsOutputs), .O(IC_DQ[5]));
-	OBUFT BUF6 (.I(IC_DQ_BUF[6]), .T(IsOutputs), .O(IC_DQ[6]));
-	OBUFT BUF7 (.I(IC_DQ_BUF[7]), .T(IsOutputs), .O(IC_DQ[7]));
-	OBUFT BUF8 (.I(IC_DQ_BUF[8]), .T(IsOutputs), .O(IC_DQ[8]));
-	OBUFT BUF9 (.I(IC_DQ_BUF[9]), .T(IsOutputs), .O(IC_DQ[9]));
-	OBUFT BUF10 (.I(IC_DQ_BUF[10]), .T(IsOutputs), .O(IC_DQ[10]));
-	OBUFT BUF11 (.I(IC_DQ_BUF[11]), .T(IsOutputs), .O(IC_DQ[11]));
-	OBUFT BUF12 (.I(IC_DQ_BUF[12]), .T(IsOutputs), .O(IC_DQ[12]));
-	OBUFT BUF13 (.I(IC_DQ_BUF[13]), .T(IsOutputs), .O(IC_DQ[13]));
-	OBUFT BUF14 (.I(IC_DQ_BUF[14]), .T(IsOutputs), .O(IC_DQ[14]));
-	OBUFT BUF15 (.I(IC_DQ_BUF[15]), .T(IsOutputs), .O(IC_DQ[15]));
+	//OBUFT BUF_LDQS (.I(IC_LDQS_BUF), .T(IsOutputs), .O(IC_LDQS));
+	//OBUFT BUF_UDQS (.I(IC_UDQS_BUF), .T(IsOutputs), .O(IC_UDQS));
+	//OBUFT BUF0 (.I(IC_DQ_BUF[0]), .T(IsOutputs), .O(IC_DQ[0]));
+	//OBUFT BUF1 (.I(IC_DQ_BUF[1]), .T(IsOutputs), .O(IC_DQ[1]));
+	//OBUFT BUF2 (.I(IC_DQ_BUF[2]), .T(IsOutputs), .O(IC_DQ[2]));
+	//OBUFT BUF3 (.I(IC_DQ_BUF[3]), .T(IsOutputs), .O(IC_DQ[3]));
+	//OBUFT BUF4 (.I(IC_DQ_BUF[4]), .T(IsOutputs), .O(IC_DQ[4]));
+	//OBUFT BUF5 (.I(IC_DQ_BUF[5]), .T(IsOutputs), .O(IC_DQ[5]));
+	//OBUFT BUF6 (.I(IC_DQ_BUF[6]), .T(IsOutputs), .O(IC_DQ[6]));
+	//OBUFT BUF7 (.I(IC_DQ_BUF[7]), .T(IsOutputs), .O(IC_DQ[7]));
+	//OBUFT BUF8 (.I(IC_DQ_BUF[8]), .T(IsOutputs), .O(IC_DQ[8]));
+	//OBUFT BUF9 (.I(IC_DQ_BUF[9]), .T(IsOutputs), .O(IC_DQ[9]));
+	//OBUFT BUF10 (.I(IC_DQ_BUF[10]), .T(IsOutputs), .O(IC_DQ[10]));
+	//OBUFT BUF11 (.I(IC_DQ_BUF[11]), .T(IsOutputs), .O(IC_DQ[11]));
+	//OBUFT BUF12 (.I(IC_DQ_BUF[12]), .T(IsOutputs), .O(IC_DQ[12]));
+	//OBUFT BUF13 (.I(IC_DQ_BUF[13]), .T(IsOutputs), .O(IC_DQ[13]));
+	//OBUFT BUF14 (.I(IC_DQ_BUF[14]), .T(IsOutputs), .O(IC_DQ[14]));
+	//OBUFT BUF15 (.I(IC_DQ_BUF[15]), .T(IsOutputs), .O(IC_DQ[15]));
 	
 	reg [5:0] InitStage = 0;
 	reg [31:0] Counter = 0;
@@ -233,7 +233,7 @@ module DDR_SDRAM_Controller(
 				end
 			1 : begin
 					Counter <= Counter + 1;
-					if (Counter > 30000) begin // Wait > 200us
+					if (Counter > 30000) begin // Wait 30000 cycles > 200us
 						Counter <= 0;
 						InitStage = 2;
 					end
