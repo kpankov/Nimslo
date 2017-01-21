@@ -12,51 +12,44 @@ using namespace std;
 #define CAMERAS 4
 #define MAX_LEN 64
 
-void threadCamera0(void * thread_data) {
+void * threadCamera(void * thread_data) {
+  unsigned char * id = (unsigned char *) thread_data;
+
+  CvCapture * capture;
+  IplImage * img;
+
+  char filename[MAX_LEN];
+  char *filename_ptr;
+
+  capture = cvCreateCameraCapture(*id);
+  cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_WIDTH, 1600);
+  cvSetCaptureProperty(capture, CV_CAP_PROP_FRAME_HEIGHT, 1200);
+
+  img = cvQueryFrame(capture);
+  if (!capture) perror((char*) "No Capture");
+
+  snprintf(filename, MAX_LEN, "img%d.jpg", *id);
+  filename_ptr = filename;
+  cvSaveImage(filename_ptr, img);
+
+  cvReleaseCapture(&capture);
+
   pthread_exit(0);
 }
 
 int main(int argc, char **argv) {
-  CvCapture * capture[CAMERAS];
-  IplImage *img[CAMERAS];
-  char filename[MAX_LEN];
-  char * filename_ptr;
+  unsigned char ids[CAMERAS] = {0, 1, 2, 3};
+  pthread_t thread[CAMERAS];
   
-  cout << "cvCreateCameraCapture()" << endl;
-  for (int i = 0; i < CAMERAS; i++) {
-    capture[i] = cvCreateCameraCapture(i);
-    cvSetCaptureProperty(capture[i], CV_CAP_PROP_FRAME_WIDTH, 1600);
-    cvSetCaptureProperty(capture[i], CV_CAP_PROP_FRAME_HEIGHT, 1200);
-  }
+  pthread_create(&thread[0], NULL, threadCamera, &ids[0]);
+  pthread_create(&thread[1], NULL, threadCamera, &ids[1]);
+  pthread_create(&thread[2], NULL, threadCamera, &ids[2]);
+  pthread_create(&thread[3], NULL, threadCamera, &ids[3]);
 
-  cout << "cvQueryFrame()" << endl;
-  for (int i = 0; i < CAMERAS; i++) {
-    cout << "Frame " << i << endl;
-    
-    cout << "cvQueryFrame() #" << i << endl;
-    img[i] = cvQueryFrame(capture[i]);
-    if (!capture[i]) perror((char*) "No Capture");
-    
-//     cout << "cvSaveImage() #" << i << endl;
-//     snprintf(filename, MAX_LEN, "img%d.jpg", i);
-//     filename_ptr = filename;
-//     cvSaveImage(filename_ptr, img[i]);
-    
-//     cout << "cvReleaseCapture()" << endl;
-//     cvReleaseCapture(&capture[i]);
-  }
-  
-  usleep(1000000);
-  
-  for (int i = 0; i < CAMERAS; i++) {
-    cout << "cvSaveImage() #" << i << endl;
-    snprintf(filename, MAX_LEN, "img%d.jpg", i);
-    filename_ptr = filename;
-    cvSaveImage(filename_ptr, img[i]);
-    
-    cout << "cvReleaseCapture()" << endl;
-    cvReleaseCapture(&capture[i]);
-  }
-  
+  pthread_join(thread[0], NULL);
+  pthread_join(thread[1], NULL);
+  pthread_join(thread[2], NULL);
+  pthread_join(thread[3], NULL);
+
   return 0;
 }
